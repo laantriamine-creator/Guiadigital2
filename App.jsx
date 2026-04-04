@@ -700,7 +700,7 @@ function StickyBuyBar() {
           <span style={{ fontSize:12, color:"#6B6B6B", lineHeight:1.3 }}>Guía 21 días</span>
         </div>
         <button
-          onClick={() => alert("Aquí iría la pasarela de pago (Stripe / Bizum)")}
+          onClick={() => window.location.href = "https://buy.stripe.com/dRm6oH8syeNJ0y1aWK8ww00"}
           style={{
             background:"linear-gradient(135deg,#1A6B4B,#0F4D33)",
             color:"#fff", border:"none", borderRadius:10,
@@ -1287,7 +1287,7 @@ export default function Funnel() {
             <div style={{ fontFamily:serif, fontSize:32, fontWeight:700, color:P.accent }}>9,90 €</div>
             <p style={{ fontSize:13, color:P.muted, margin:"8px 0 0", lineHeight:1.5 }}>Menos que una jarra filtrante. Menos que dos cafés con tostada.</p>
           </Card>
-          <Btn onClick={() => alert("Aquí iría la pasarela de pago (Stripe / Bizum)")}>Quiero mi guía por 9,90 €</Btn>
+          <Btn onClick={() => window.location.href = "https://buy.stripe.com/dRm6oH8syeNJ0y1aWK8ww00"}>Quiero mi guía por 9,90 €</Btn>
           <p style={{ fontSize:12, color:P.muted, textAlign:"center", marginTop:12 }}>Pago seguro · Acceso inmediato · Garantía 30 días</p>
           {/* Payment methods */}
           <div style={{ display:"flex", justifyContent:"center", gap:12, marginTop:10, alignItems:"center" }}>
@@ -1314,7 +1314,7 @@ export default function Funnel() {
         {/* Final CTA */}
         <Section style={{ textAlign:"center", paddingTop:0, paddingBottom:20 }}>
           <h2 style={{ fontFamily:serif, fontSize:24, fontWeight:600, marginBottom:16, lineHeight:1.3 }}>Saber es el primer paso. Tener un plan es el segundo.</h2>
-          <Btn onClick={() => alert("Aquí iría la pasarela de pago (Stripe / Bizum)")}>Acceder a la guía — 9,90 €</Btn>
+          <Btn onClick={() => window.location.href = "https://buy.stripe.com/dRm6oH8syeNJ0y1aWK8ww00"}>Acceder a la guía — 9,90 €</Btn>
         </Section>
 
         {/* Sticky bottom bar */}
