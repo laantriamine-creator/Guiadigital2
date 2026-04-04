@@ -1,0 +1,42 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #FAFAF7;
+  color: #191919;
+  font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+input:focus {
+  outline: 2px solid #1A6B4B;
+  outline-offset: -1px;
+  border-color: #1A6B4B !important;
+}
+
+button {
+  font-family: inherit;
+}
+
+::selection {
+  background: #1A6B4B;
+  color: white;
+}
