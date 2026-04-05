@@ -1073,8 +1073,20 @@ export default function Funnel() {
               <label style={{ fontSize:13, fontWeight:600, display:"block", marginBottom:6 }}>Tu email</label>
               <input value={email} onChange={e => setEmail(e.target.value)} placeholder="tucorreo@ejemplo.com" type="email" style={{ width:"100%", padding:"14px 16px", borderRadius:12, border:`1.5px solid ${P.border}`, fontSize:15, fontFamily:sans, background:P.bg, boxSizing:"border-box", outline:"none" }} />
             </div>
-            <Btn onClick={() => { if (!email.trim()||!name.trim()) return; fetch("/api/subscribe", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({ email, name, score:scores.overall.pct, level:scores.overall.pct>=80?"A":scores.overall.pct>=60?"B":scores.overall.pct>=40?"C":scores.overall.pct>=20?"D":"E" }) }).catch(()=>{}); go("results-full"); }} disabled={!name.trim()||!email.trim()}>Ver análisis completo</Btn>
-          </Card>
+<Btn onClick={() => {
+  if (!email.trim() || !name.trim()) return;
+  fetch("/api/subscribe", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      email,
+      name,
+      score: scores.overall.pct,
+      level: scores.overall.pct >= 80 ? "A" : scores.overall.pct >= 60 ? "B" : scores.overall.pct >= 40 ? "C" : scores.overall.pct >= 20 ? "D" : "E"
+    })
+  }).catch(() => {});
+  go("results-full");
+}} disabled={!name.trim() || !email.trim()}>Ver análisis completo</Btn>          </Card>
           <p style={{ fontSize:12, color:P.muted, margin:"8px 0 4px", display:"flex", alignItems:"center", justifyContent:"center", gap:6 }}><IconLock size={14} color={P.muted} /> Datos protegidos conforme al RGPD.</p>
           <p style={{ fontSize:12, color:P.muted, margin:"4px 0", display:"flex", alignItems:"center", justifyContent:"center", gap:6 }}><IconMail size={14} color={P.muted} /> También recibirás el resultado por email.</p>
           <p style={{ fontSize:12, color:P.muted, margin:"4px 0", display:"flex", alignItems:"center", justifyContent:"center", gap:6 }}><IconX size={14} color={P.muted} /> Baja con un clic. Sin spam.</p>
