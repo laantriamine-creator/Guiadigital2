@@ -1297,6 +1297,7 @@ export default function Funnel() {
           </Card>
           <Btn onClick={() => window.location.href = "https://buy.stripe.com/dRm6oH8syeNJ0y1aWK8ww00"}>Quiero mi guía por 9,90 €</Btn>
           <p style={{ fontSize:12, color:P.muted, textAlign:"center", marginTop:12 }}>Pago seguro · Acceso inmediato · Garantía 30 días</p>
+          <p style={{ fontSize:12, color:P.muted, textAlign:"center", marginTop:8, display:"flex", alignItems:"center", justifyContent:"center", gap:5 }}>🌱 El 1% de cada compra se destina a protección medioambiental</p>
           {/* Payment methods */}
           <div style={{ display:"flex", justifyContent:"center", gap:12, marginTop:10, alignItems:"center" }}>
             <span style={{ fontSize:11, color:P.muted }}>Métodos de pago:</span>
