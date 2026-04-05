@@ -1173,7 +1173,7 @@ export default function Funnel() {
                         onMouseLeave={e => { e.target.style.background = P.accentLight; e.target.style.color = P.accent; }}
                       >
                         <IconLock size={12} color="currentColor" />
-                        +{adv.tips.length - 1} acciones en la guía →
+                        Más acciones en la guía →
                       </button>
                     </div>
                   </div>
