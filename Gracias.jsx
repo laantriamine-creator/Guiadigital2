@@ -34,7 +34,7 @@ const PRODUCT_VALUE = 9.9;
 const CURRENCY = "EUR";
 
 // Reemplaza estos con tus IDs reales
-const META_PIXEL_ID = "TU_META_PIXEL_ID";
+const META_PIXEL_ID = "824523316724029";
 const TIKTOK_PIXEL_ID = "TU_TIKTOK_PIXEL_ID";
 const GA_MEASUREMENT_ID = "TU_GA4_ID";
 
