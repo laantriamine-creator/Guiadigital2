@@ -1074,35 +1074,48 @@ export default function Funnel() {
               <input value={email} onChange={e => setEmail(e.target.value)} placeholder="tucorreo@ejemplo.com" type="email" style={{ width:"100%", padding:"14px 16px", borderRadius:12, border:`1.5px solid ${P.border}`, fontSize:15, fontFamily:sans, background:P.bg, boxSizing:"border-box", outline:"none" }} />
             </div>
 <Btn onClick={() => {
-  if (!email.trim() || !name.trim()) return;
-  
-  // Calcular la categoría principal (donde el usuario está más expuesto = menor pct)
-  const CAT_LABELS_ES = {
-    food: "Alimentación",
-    water: "Agua",
-    home: "Hogar y aire",
-    care: "Cuidado personal",
-    textile: "Textiles y ropa"
-  };
-  const categoriaKey = CAT_KEYS.reduce((peor, cat) => 
-    scores[cat].pct < scores[peor].pct ? cat : peor
-  , CAT_KEYS[0]);
-  const categoriaPrincipal = CAT_LABELS_ES[categoriaKey];
-  
-  fetch("/api/subscribe", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ 
-      email, 
-      name, 
-      score: scores.overall.pct, 
-      level: scores.overall.pct >= 80 ? "A" : scores.overall.pct >= 60 ? "B" : scores.overall.pct >= 40 ? "C" : scores.overall.pct >= 20 ? "D" : "E",
-      categoria: categoriaPrincipal
-    })
-  }).catch(() => {});
-  
-  go("results-full");
-}} disabled={!name.trim() || !email.trim()}>Ver análisis completo</Btn>
+              if (!email.trim() || !name.trim()) return;
+
+              // Calcular la categoría donde el usuario está más expuesto (menor pct = peores hábitos)
+              const CAT_LABELS_ES = {
+                food: "Alimentación",
+                water: "Agua",
+                home: "Hogar y aire",
+                care: "Cuidado personal",
+                textile: "Textiles y ropa"
+              };
+              const categoriaKey = CAT_KEYS.reduce((peor, cat) =>
+                scores[cat].pct < scores[peor].pct ? cat : peor
+              , CAT_KEYS[0]);
+              const categoriaPrincipal = CAT_LABELS_ES[categoriaKey];
+
+              const nivelLetra = scores.overall.pct >= 80 ? "A" : scores.overall.pct >= 60 ? "B" : scores.overall.pct >= 40 ? "C" : scores.overall.pct >= 20 ? "D" : "E";
+
+              // Enviar lead a Brevo via backend
+              fetch("/api/subscribe", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  email,
+                  name,
+                  score: scores.overall.pct,
+                  level: nivelLetra,
+                  categoria: categoriaPrincipal
+                })
+              }).catch(() => {});
+
+              // Disparar evento Lead de Meta Pixel
+              if (typeof window !== 'undefined' && window.fbq) {
+                window.fbq('track', 'Lead', {
+                  content_name: 'Quiz Microplasticos',
+                  content_category: categoriaPrincipal,
+                  value: 9.90,
+                  currency: 'EUR'
+                });
+              }
+
+              go("results-full");
+            }} disabled={!name.trim() || !email.trim()}>Ver análisis completo</Btn>
           </Card>
           <p style={{ fontSize:12, color:P.muted, margin:"8px 0 4px", display:"flex", alignItems:"center", justifyContent:"center", gap:6 }}><IconLock size={14} color={P.muted} /> Datos protegidos conforme al RGPD.</p>
           <p style={{ fontSize:12, color:P.muted, margin:"4px 0", display:"flex", alignItems:"center", justifyContent:"center", gap:6 }}><IconMail size={14} color={P.muted} /> También recibirás el resultado por email.</p>
