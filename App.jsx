@@ -1373,9 +1373,11 @@ export default function Funnel() {
           <p style={{ fontSize:12, color:P.muted, textAlign:"center", marginTop:12 }}>Pago seguro · Acceso inmediato · Garantía 30 días</p>
           <p style={{ fontSize:12, color:P.muted, textAlign:"center", marginTop:8, display:"flex", alignItems:"center", justifyContent:"center", gap:5 }}>🌱 El 1% de cada compra se destina a protección medioambiental</p>
           {/* Payment methods */}
-          <div style={{ display:"flex", justifyContent:"center", gap:12, marginTop:10, alignItems:"center" }}>
+          <div style={{ display:"flex", justifyContent:"center", gap:8, marginTop:10, alignItems:"center", flexWrap:"wrap" }}>
             <span style={{ fontSize:11, color:P.muted }}>Métodos de pago:</span>
             <span style={{ fontSize:11, fontWeight:700, color:"#635BFF", background:"#635BFF14", padding:"3px 10px", borderRadius:6 }}>Tarjeta</span>
+            <span style={{ fontSize:11, fontWeight:700, color:"#000", background:"#0000000D", padding:"3px 10px", borderRadius:6 }}>Apple Pay</span>
+            <span style={{ fontSize:11, fontWeight:700, color:"#4285F4", background:"#4285F414", padding:"3px 10px", borderRadius:6 }}>Google Pay</span>
           </div>
         </Section>
 
