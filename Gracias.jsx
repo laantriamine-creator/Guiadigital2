@@ -183,12 +183,6 @@ export default function Gracias() {
           position: relative;
           z-index: 2;
         }
-        .gracias-logo {
-          font-family: 'DM Serif Display', serif;
-          font-size: 22px;
-          color: var(--pc-green-dark);
-          letter-spacing: 0.5px;
-        }
 
         /* ── Main Card ── */
         .gracias-main {
@@ -430,7 +424,34 @@ export default function Gracias() {
 
         {/* Nav */}
         <nav className="gracias-nav">
-          <span className="gracias-logo">PuraClaridad</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
+              <circle cx="20" cy="20" r="18" stroke="#1A6B4B" strokeWidth="2" fill="#1A6B4B" fillOpacity="0.06"/>
+              <path d="M20 8C20 8 13 14 13 21a7 7 0 0014 0c0-7-7-13-7-13z" stroke="#1A6B4B" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" fill="#1A6B4B" fillOpacity="0.1"/>
+              <path d="M17 22c0 0 1 2.5 3 2.5s3-2.5 3-2.5" stroke="#1A6B4B" strokeWidth="1.3" strokeLinecap="round" opacity="0.5"/>
+              <circle cx="15" cy="16" r="0.8" fill="#1A6B4B" opacity="0.25"/>
+              <circle cx="25" cy="18" r="0.6" fill="#1A6B4B" opacity="0.2"/>
+              <circle cx="18" cy="12" r="0.5" fill="#1A6B4B" opacity="0.15"/>
+              <path d="M20 28v4" stroke="#1A6B4B" strokeWidth="1.5" strokeLinecap="round" opacity="0.3"/>
+            </svg>
+            <div>
+              <div style={{
+                fontFamily: "'Source Serif 4', Georgia, serif",
+                fontSize: 17, fontWeight: 700, color: "#191919",
+                lineHeight: 1.1, letterSpacing: "-0.02em",
+              }}>
+                PuraClaridad
+              </div>
+              <div style={{
+                fontFamily: "'Outfit', system-ui, sans-serif",
+                fontSize: 9.5, fontWeight: 500, color: "#6B6B6B",
+                letterSpacing: "0.12em", textTransform: "uppercase",
+                marginTop: 1,
+              }}>
+                Vida sin microplásticos
+              </div>
+            </div>
+          </div>
         </nav>
 
         {/* Main */}
