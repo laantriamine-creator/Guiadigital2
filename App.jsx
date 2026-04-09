@@ -735,6 +735,11 @@ function StickyBuyBar() {
         <div style={{ display:"flex", alignItems:"center", gap:8 }}>
           <span style={{
             fontFamily:"'Source Serif 4', Georgia, serif",
+            fontSize:14, fontWeight:500, color:"#6B6B6B",
+            textDecoration:"line-through", textDecorationColor:"#D92B2B",
+          }}>37 €</span>
+          <span style={{
+            fontFamily:"'Source Serif 4', Georgia, serif",
             fontSize:18, fontWeight:700, color:"#1A6B4B",
           }}>9,90 €</span>
           <span style={{ fontSize:12, color:"#6B6B6B", lineHeight:1.3 }}>Guía 21 días</span>
@@ -1366,7 +1371,13 @@ export default function Funnel() {
 
           {/* Price + CTA */}
           <Card style={{ background:P.warm, border:"none", textAlign:"center", marginBottom:20 }}>
-            <div style={{ fontFamily:serif, fontSize:32, fontWeight:700, color:P.accent }}>9,90 €</div>
+            <div style={{ display:"inline-flex", alignItems:"center", gap:8, background:"#D92B2B", color:"#fff", fontSize:11, fontWeight:700, padding:"4px 12px", borderRadius:20, marginBottom:10, letterSpacing:0.3 }}>
+              OFERTA DE LANZAMIENTO −73%
+            </div>
+            <div style={{ display:"flex", alignItems:"baseline", justifyContent:"center", gap:12 }}>
+              <span style={{ fontFamily:serif, fontSize:20, fontWeight:500, color:P.muted, textDecoration:"line-through", textDecorationColor:"#D92B2B", textDecorationThickness:2 }}>37 €</span>
+              <span style={{ fontFamily:serif, fontSize:36, fontWeight:700, color:P.accent }}>9,90 €</span>
+            </div>
             <p style={{ fontSize:13, color:P.muted, margin:"8px 0 0", lineHeight:1.5 }}>Menos que una jarra filtrante. Menos que dos cafés con tostada.</p>
           </Card>
           <Btn onClick={() => window.location.href = "https://buy.stripe.com/dRm6oH8syeNJ0y1aWK8ww00"}>Quiero mi guía por 9,90 €</Btn>
