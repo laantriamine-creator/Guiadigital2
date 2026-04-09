@@ -1035,7 +1035,18 @@ export default function Funnel() {
                 <button
                   key={i}
                   className="quiz-opt"
-                  onClick={() => { setAnswers(p => ({...p,[qIdx]:i})); if (qIdx < QUIZ.length-1) go(null,qIdx+1); else go("results"); }}
+                  onClick={() => {
+  if (qIdx === 0 && Object.keys(answers).length === 0) {
+    if (typeof window !== 'undefined' && window.fbq) {
+      window.fbq('trackCustom', 'QuizStarted', {
+        content_name: 'Quiz Microplasticos'
+      });
+    }
+  }
+  setAnswers(p => ({...p,[qIdx]:i}));
+  if (qIdx < QUIZ.length-1) go(null,qIdx+1);
+  else go("results");
+}}
                   style={{
                     background: selected ? P.accentLight : P.card,
                     border: `2px solid ${selected ? P.accent : P.border}`,
@@ -1136,7 +1147,14 @@ export default function Funnel() {
 
               const nivelLetra = scores.overall.pct >= 80 ? "A" : scores.overall.pct >= 60 ? "B" : scores.overall.pct >= 40 ? "C" : scores.overall.pct >= 20 ? "D" : "E";
 
-              // Enviar lead a Brevo via backend
+              if (typeof window !== 'undefined' && window.fbq) {
+                window.fbq('trackCustom', 'QuizCompleted', {
+                  content_name: 'Quiz Microplasticos',
+                  content_category: categoriaPrincipal,
+                  score: scores.overall.pct,
+                  level: nivelLetra
+                });
+              }// Enviar lead a Brevo via backend
               fetch("/api/subscribe", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
