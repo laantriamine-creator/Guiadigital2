@@ -1372,7 +1372,7 @@ export default function Funnel() {
           {/* Price + CTA */}
           <Card style={{ background:P.warm, border:"none", textAlign:"center", marginBottom:20 }}>
             <div style={{ display:"inline-flex", alignItems:"center", gap:8, background:"#D92B2B", color:"#fff", fontSize:11, fontWeight:700, padding:"4px 12px", borderRadius:20, marginBottom:10, letterSpacing:0.3 }}>
-              OFERTA DE LANZAMIENTO −73%
+              OFERTA DE PASCUA −73%
             </div>
             <div style={{ display:"flex", alignItems:"baseline", justifyContent:"center", gap:12 }}>
               <span style={{ fontFamily:serif, fontSize:20, fontWeight:500, color:P.muted, textDecoration:"line-through", textDecorationColor:"#D92B2B", textDecorationThickness:2 }}>37 €</span>
