@@ -733,16 +733,14 @@ function StickyBuyBar() {
         display:"flex", alignItems:"center", justifyContent:"space-between", gap:12,
       }}>
         <div style={{ display:"flex", alignItems:"center", gap:8 }}>
-          <span style={{
-            fontFamily:"'Source Serif 4', Georgia, serif",
-            fontSize:14, fontWeight:500, color:"#6B6B6B",
-            textDecoration:"line-through", textDecorationColor:"#D92B2B",
-          }}>37 €</span>
-          <span style={{
-            fontFamily:"'Source Serif 4', Georgia, serif",
-            fontSize:18, fontWeight:700, color:"#1A6B4B",
-          }}>9,90 €</span>
-          <span style={{ fontSize:12, color:"#6B6B6B", lineHeight:1.3 }}>Guía 21 días</span>
+          <div style={{ display:"flex", flexDirection:"column" }}>
+            <div style={{ display:"flex", alignItems:"center", gap:6 }}>
+              <span style={{ fontSize:12, color:"#9B9B9B", textDecoration:"line-through", fontFamily:"'Source Serif 4', Georgia, serif" }}>37 €</span>
+              <span style={{ fontSize:10, fontWeight:700, color:"#fff", background:"#C0392B", padding:"1px 6px", borderRadius:10 }}>-73%</span>
+            </div>
+            <span style={{ fontFamily:"'Source Serif 4', Georgia, serif", fontSize:18, fontWeight:700, color:"#1A6B4B" }}>9,90 €</span>
+          </div>
+          <span style={{ fontSize:11, color:"#6B6B6B", lineHeight:1.3 }}>Oferta Pascua</span>
         </div>
         <button
           onClick={() => window.location.href = "https://buy.stripe.com/dRm6oH8syeNJ0y1aWK8ww00"}
@@ -759,6 +757,117 @@ function StickyBuyBar() {
         </button>
       </div>
     </div>
+  );
+}
+
+
+// ─── NEWSLETTER SECTION ───
+function NewsletterSection() {
+  const [nlEmail, setNlEmail] = useState("");
+  const [nlStatus, setNlStatus] = useState("idle");
+
+  async function handleSubscribe() {
+    if (!nlEmail.trim()) return;
+    setNlStatus("loading");
+    fetch("/api/newsletter", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: nlEmail, source: "quiz_newsletter" }),
+    }).catch(() => {});
+    if (typeof window !== "undefined" && window.fbq) {
+      window.fbq("track", "Lead", {
+        content_name: "PuraClaridad Semanal",
+        content_category: "Newsletter",
+        currency: "EUR",
+      });
+    }
+    setNlStatus("success");
+  }
+
+  return (
+    <Section style={{ paddingBottom: 48 }}>
+      <div style={{
+        background: "linear-gradient(135deg, #0F4D33 0%, #1A6B4B 100%)",
+        borderRadius: 20,
+        padding: "36px 28px",
+        color: "#fff",
+        position: "relative",
+        overflow: "hidden",
+      }}>
+        <div style={{ position:"absolute", top:-20, right:-20, opacity:0.06 }}>
+          <IconLeaf size={120} color="#fff" />
+        </div>
+        <div style={{ position:"absolute", bottom:-10, left:-10, opacity:0.04 }}>
+          <IconShield size={100} color="#fff" />
+        </div>
+        <div style={{ position:"relative" }}>
+          <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:6 }}>
+            <BrandLogo size={28} color="#fff" />
+            <span style={{ fontFamily:serif, fontSize:18, fontWeight:700, color:"#fff" }}>PuraClaridad Semanal</span>
+          </div>
+          <p style={{ fontSize:12, color:"rgba(255,255,255,0.55)", margin:"0 0 20px", fontWeight:600, letterSpacing:"0.06em", textTransform:"uppercase" }}>Newsletter gratuita · Cada semana</p>
+          <h3 style={{ fontFamily:serif, fontSize:22, fontWeight:600, margin:"0 0 12px", lineHeight:1.3, color:"#fff" }}>
+            Un estudio. Un producto. Una acción concreta.
+          </h3>
+          <p style={{ fontSize:14, color:"rgba(255,255,255,0.75)", lineHeight:1.6, margin:"0 0 24px" }}>
+            Cada semana en tu bandeja: lo más relevante sobre microplásticos adaptado a España. Sin alarmismo, sin relleno. Solo lo que puedes aplicar.
+          </p>
+          <div style={{ display:"flex", flexDirection:"column", gap:10, marginBottom:28 }}>
+            {[
+              { icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,0.7)" strokeWidth="1.6"/><circle cx="12" cy="9" r="2" stroke="rgba(255,255,255,0.7)" strokeWidth="1.4"/><path d="M8 17c0-2.2 1.8-4 4-4s4 1.8 4 4" stroke="rgba(255,255,255,0.7)" strokeWidth="1.4" strokeLinecap="round"/></svg>, text: "Un estudio reciente explicado en 3 líneas" },
+              { icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 2h12l1 6H5L6 2z" stroke="rgba(255,255,255,0.7)" strokeWidth="1.6" strokeLinejoin="round"/><path d="M5 8l1 12h12l1-12" stroke="rgba(255,255,255,0.7)" strokeWidth="1.6" strokeLinejoin="round"/><path d="M9 12h6" stroke="rgba(255,255,255,0.7)" strokeWidth="1.4" strokeLinecap="round"/></svg>, text: "Un producto alternativo disponible en España con precio real" },
+              { icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="rgba(255,255,255,0.7)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>, text: "Una acción concreta para esa semana" },
+              { icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="rgba(255,255,255,0.7)" strokeWidth="1.6"/><path d="M9 12h6M12 9v6" stroke="rgba(255,255,255,0.7)" strokeWidth="1.4" strokeLinecap="round"/></svg>, text: "Novedades de legislación europea cuando las haya" },
+            ].map(({ icon, text }, i) => (
+              <div key={i} style={{ display:"flex", gap:10, alignItems:"flex-start" }}>
+                <span style={{ flexShrink:0, marginTop:1 }}>{icon}</span>
+                <span style={{ fontSize:13, color:"rgba(255,255,255,0.82)", lineHeight:1.5 }}>{text}</span>
+              </div>
+            ))}
+          </div>
+          {nlStatus === "success" ? (
+            <div style={{ background:"rgba(255,255,255,0.12)", borderRadius:14, padding:"20px 22px", textAlign:"center" }}>
+              <div style={{ marginBottom:8, display:"flex", justifyContent:"center" }}><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="16" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5"/><path d="M11 18.5l5 5 9-10" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
+              <div style={{ fontWeight:700, fontSize:16, color:"#fff", marginBottom:4 }}>¡Ya estás dentro!</div>
+              <div style={{ fontSize:13, color:"rgba(255,255,255,0.7)", lineHeight:1.5 }}>El próximo número llegará a tu bandeja. Bienvenido/a.</div>
+            </div>
+          ) : (
+            <div>
+              <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
+                <input
+                  value={nlEmail}
+                  onChange={e => setNlEmail(e.target.value)}
+                  onKeyDown={e => e.key === "Enter" && handleSubscribe()}
+                  placeholder="tucorreo@ejemplo.com"
+                  type="email"
+                  style={{
+                    flex:1, minWidth:180, padding:"14px 16px", borderRadius:12,
+                    border:"1.5px solid rgba(255,255,255,0.25)",
+                    fontSize:15, fontFamily:"'Outfit', system-ui, sans-serif",
+                    background:"rgba(255,255,255,0.12)", color:"#fff", outline:"none",
+                  }}
+                />
+                <button
+                  onClick={handleSubscribe}
+                  disabled={!nlEmail.trim() || nlStatus === "loading"}
+                  style={{
+                    padding:"14px 22px", borderRadius:12, fontSize:14, fontWeight:700,
+                    background:"#fff", color:"#0F4D33", border:"none",
+                    cursor: !nlEmail.trim() ? "default" : "pointer",
+                    opacity: !nlEmail.trim() ? 0.5 : 1,
+                    fontFamily:"'Outfit', system-ui, sans-serif",
+                    whiteSpace:"nowrap", boxShadow:"0 4px 14px rgba(0,0,0,0.15)",
+                  }}
+                >{nlStatus === "loading" ? "..." : "Suscribirme gratis"}</button>
+              </div>
+              <p style={{ fontSize:11, color:"rgba(255,255,255,0.4)", margin:"10px 0 0", textAlign:"center" }}>
+                Sin spam · Baja con un clic · RGPD
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    </Section>
   );
 }
 
@@ -1035,18 +1144,7 @@ export default function Funnel() {
                 <button
                   key={i}
                   className="quiz-opt"
-                  onClick={() => {
-  if (qIdx === 0 && Object.keys(answers).length === 0) {
-    if (typeof window !== 'undefined' && window.fbq) {
-      window.fbq('trackCustom', 'QuizStarted', {
-        content_name: 'Quiz Microplasticos'
-      });
-    }
-  }
-  setAnswers(p => ({...p,[qIdx]:i}));
-  if (qIdx < QUIZ.length-1) go(null,qIdx+1);
-  else go("results");
-}}
+                  onClick={() => { setAnswers(p => ({...p,[qIdx]:i})); if (qIdx < QUIZ.length-1) { go(null,qIdx+1); } else { if (typeof window !== 'undefined' && window.fbq) { window.fbq('track', 'QuizCompleted', { content_name: 'Quiz Microplasticos', value: 9.90, currency: 'EUR' }); } go('results'); } }}
                   style={{
                     background: selected ? P.accentLight : P.card,
                     border: `2px solid ${selected ? P.accent : P.border}`,
@@ -1082,20 +1180,21 @@ export default function Funnel() {
     );
   }
 
-  // ═══ RESULTS — CHANGED: Split gate — show partial results FREE, gate details behind email ═══
+
+  // ═══ RESULTS — Full analysis + ebook offer, no gate ═══
   if (step === "results") {
     return (
       <div ref={topRef} style={{ fontFamily:sans, color:P.text, background:P.bg, minHeight:"100vh", paddingBottom:0 }}>
         <Header onLogoClick={() => go("landing")} context="results" />
         <style dangerouslySetInnerHTML={{ __html: "@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}" }} />
 
-        {/* FREE: Overall score */}
+        {/* Overall score */}
         <Section style={{ textAlign:"center", paddingTop:48, animation:"fadeUp 0.6s ease" }}>
           <Badge style={{ background:`${oColor}18`, color:oColor }}>Tu estimación</Badge>
           <h1 style={{ fontFamily:serif, fontSize:28, fontWeight:600, margin:"20px 0 6px" }}>Tu nivel de protección:</h1>
         </Section>
 
-        {/* FREE: Nutri-Score display */}
+        {/* Nutri-Score */}
         <Section style={{ paddingTop:0, paddingBottom:16 }}>
           <Card style={{ textAlign:"center", padding:"32px 22px" }}>
             <NutriScoreBadge pct={scores.overall.pct} size="large" />
@@ -1105,7 +1204,7 @@ export default function Funnel() {
           </Card>
         </Section>
 
-        {/* FREE: Category grades */}
+        {/* Category breakdown — fully visible */}
         <Section style={{ paddingTop:8 }}>
           <h2 style={{ fontFamily:serif, fontSize:22, fontWeight:600, marginBottom:20 }}>Desglose por categoría</h2>
           <Card>{CAT_KEYS.map(cat => <ExposureBarGrade key={cat} catKey={cat} score={scores[cat].score} maxScore={scores[cat].max} />)}</Card>
@@ -1113,105 +1212,7 @@ export default function Funnel() {
 
         <Divider />
 
-        {/* GATE: Email for detailed analysis */}
-        <Section style={{ textAlign:"center" }}>
-          <div style={{ margin:"0 auto 20px", display:"flex", justifyContent:"center" }}><IconLock size={36} color={P.accent} /></div>
-          <h2 style={{ fontFamily:serif, fontSize:22, fontWeight:600, marginBottom:8 }}>¿Quieres ver el análisis detallado?</h2>
-          <p style={{ color:P.muted, fontSize:14, marginBottom:24, lineHeight:1.55 }}>
-            Introduce tu nombre y email para desbloquear los consejos personalizados por categoría, las acciones prioritarias según tus respuestas y tu resumen completo.
-          </p>
-          <Card style={{ textAlign:"left", marginBottom:16 }}>
-            <div style={{ marginBottom:16 }}>
-              <label style={{ fontSize:13, fontWeight:600, display:"block", marginBottom:6 }}>Tu nombre</label>
-              <input value={name} onChange={e => setName(e.target.value)} placeholder="Ej: María" style={{ width:"100%", padding:"14px 16px", borderRadius:12, border:`1.5px solid ${P.border}`, fontSize:15, fontFamily:sans, background:P.bg, boxSizing:"border-box", outline:"none" }} />
-            </div>
-            <div style={{ marginBottom:20 }}>
-              <label style={{ fontSize:13, fontWeight:600, display:"block", marginBottom:6 }}>Tu email</label>
-              <input value={email} onChange={e => setEmail(e.target.value)} placeholder="tucorreo@ejemplo.com" type="email" style={{ width:"100%", padding:"14px 16px", borderRadius:12, border:`1.5px solid ${P.border}`, fontSize:15, fontFamily:sans, background:P.bg, boxSizing:"border-box", outline:"none" }} />
-            </div>
-<Btn onClick={() => {
-              if (!email.trim() || !name.trim()) return;
-
-              // Calcular la categoría donde el usuario está más expuesto (menor pct = peores hábitos)
-              const CAT_LABELS_ES = {
-                food: "Alimentación",
-                water: "Agua",
-                home: "Hogar y aire",
-                care: "Cuidado personal",
-                textile: "Textiles y ropa"
-              };
-              const categoriaKey = CAT_KEYS.reduce((peor, cat) =>
-                scores[cat].pct < scores[peor].pct ? cat : peor
-              , CAT_KEYS[0]);
-              const categoriaPrincipal = CAT_LABELS_ES[categoriaKey];
-
-              const nivelLetra = scores.overall.pct >= 80 ? "A" : scores.overall.pct >= 60 ? "B" : scores.overall.pct >= 40 ? "C" : scores.overall.pct >= 20 ? "D" : "E";
-
-              if (typeof window !== 'undefined' && window.fbq) {
-                window.fbq('trackCustom', 'QuizCompleted', {
-                  content_name: 'Quiz Microplasticos',
-                  content_category: categoriaPrincipal,
-                  score: scores.overall.pct,
-                  level: nivelLetra
-                });
-              }// Enviar lead a Brevo via backend
-              fetch("/api/subscribe", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  email,
-                  name,
-                  score: scores.overall.pct,
-                  level: nivelLetra,
-                  categoria: categoriaPrincipal
-                })
-              }).catch(() => {});
-
-              // Disparar evento Lead de Meta Pixel
-              if (typeof window !== 'undefined' && window.fbq) {
-                window.fbq('track', 'Lead', {
-                  content_name: 'Quiz Microplasticos',
-                  content_category: categoriaPrincipal,
-                  value: 9.90,
-                  currency: 'EUR'
-                });
-              }
-
-              go("results-full");
-            }} disabled={!name.trim() || !email.trim()}>Ver análisis completo</Btn>
-          </Card>
-          <p style={{ fontSize:12, color:P.muted, margin:"8px 0 4px", display:"flex", alignItems:"center", justifyContent:"center", gap:6 }}><IconLock size={14} color={P.muted} /> Datos protegidos conforme al RGPD.</p>
-          <p style={{ fontSize:12, color:P.muted, margin:"4px 0", display:"flex", alignItems:"center", justifyContent:"center", gap:6 }}><IconMail size={14} color={P.muted} /> También recibirás el resultado por email.</p>
-          <p style={{ fontSize:12, color:P.muted, margin:"4px 0", display:"flex", alignItems:"center", justifyContent:"center", gap:6 }}><IconX size={14} color={P.muted} /> Baja con un clic. Sin spam.</p>
-        </Section>
-
-        <Footer onLegalClick={openLegal} />
-      </div>
-    );
-  }
-
-  // ═══ RESULTS-FULL — After email: full detailed analysis ═══
-  if (step === "results-full") {
-    return (
-      <div ref={topRef} style={{ fontFamily:sans, color:P.text, background:P.bg, minHeight:"100vh", paddingBottom:0 }}>
-        <Header onLogoClick={() => go("landing")} context="results" />
-        <style dangerouslySetInnerHTML={{ __html: "@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}" }} />
-        <Section style={{ textAlign:"center", paddingTop:48, animation:"fadeUp 0.6s ease" }}>
-          <Badge style={{ background:`${oColor}18`, color:oColor }}>Análisis completo</Badge>
-          <h1 style={{ fontFamily:serif, fontSize:28, fontWeight:600, margin:"20px 0 6px" }}>{name}, tu perfil completo:</h1>
-        </Section>
-        <Section style={{ paddingTop:0, paddingBottom:16 }}>
-          <Card style={{ textAlign:"center", padding:"32px 22px" }}>
-            <NutriScoreBadge pct={scores.overall.pct} size="large" />
-          </Card>
-        </Section>
-        <Section style={{ paddingTop:8 }}>
-          <h2 style={{ fontFamily:serif, fontSize:22, fontWeight:600, marginBottom:20 }}>Desglose por categoría</h2>
-          <Card>{CAT_KEYS.map(cat => <ExposureBarGrade key={cat} catKey={cat} score={scores[cat].score} maxScore={scores[cat].max} />)}</Card>
-        </Section>
-        <Divider />
-
-        {/* DETAILED ANALYSIS — diagnosis free, tips teased */}
+        {/* Detailed analysis per category */}
         <Section>
           <h2 style={{ fontFamily:serif, fontSize:22, fontWeight:600, marginBottom:24 }}>Análisis detallado</h2>
           {CAT_KEYS.map(cat => {
@@ -1225,75 +1226,60 @@ export default function Funnel() {
               <Card key={cat} style={{ marginBottom:14, borderLeft:`4px solid ${catGrade.color}`, background:lv==="low"?`${P.red}06`:P.card }}>
                 <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:8 }}>
                   <span style={{ fontSize:16, fontWeight:700, display:"flex", alignItems:"center", gap:8 }}><CatIcon size={24} color={cd.color} />{cd.label}</span>
-                  <div style={{
-                    width:28, height:28, borderRadius:7, background:catGrade.bg,
-                    display:"flex", alignItems:"center", justifyContent:"center",
-                  }}>
+                  <div style={{ width:28, height:28, borderRadius:7, background:catGrade.bg, display:"flex", alignItems:"center", justifyContent:"center" }}>
                     <span style={{ fontSize:15, fontWeight:800, color:"#fff", fontFamily:sans }}>{catGrade.letter}</span>
                   </div>
                 </div>
                 <p style={{ fontSize:14, color:P.muted, lineHeight:1.55, marginBottom:14, marginTop:0 }}>{adv.detail}</p>
-                {/* Show only first tip free */}
                 <div style={{ background:P.bg, borderRadius:10, padding:"14px 16px" }}>
                   <p style={{ fontSize:12, fontWeight:700, marginTop:0, marginBottom:8, textTransform:"uppercase" }}>{lv==="low"?"Acciones prioritarias:":lv==="mid"?"Para mejorar:":"Para mantener:"}</p>
-                  <div style={{ display:"flex", gap:8, marginBottom:6, alignItems:"flex-start" }}>
-                    <div style={{ flexShrink:0, marginTop:2 }}><IconArrow size={14} color={lc} /></div>
-                    <span style={{ fontSize:13, lineHeight:1.5 }}>{adv.tips[0]}</span>
-                  </div>
-                  {/* Blurred remaining tips */}
-                  <div style={{ position:"relative", overflow:"hidden", borderRadius:8, marginTop:4 }}>
-                    <div style={{
-                      filter:"blur(5px)", userSelect:"none", pointerEvents:"none", opacity:0.5,
-                    }}>
-                      {adv.tips.slice(1).map((tip, i) => (
-                        <div key={i} style={{ display:"flex", gap:8, marginBottom:6, alignItems:"flex-start" }}>
-                          <div style={{ flexShrink:0, marginTop:2 }}><IconArrow size={14} color={lc} /></div>
-                          <span style={{ fontSize:13, lineHeight:1.5 }}>{tip}</span>
-                        </div>
-                      ))}
+                  {adv.tips.slice(0,2).map((tip, i) => (
+                    <div key={i} style={{ display:"flex", gap:8, marginBottom:6, alignItems:"flex-start" }}>
+                      <div style={{ flexShrink:0, marginTop:2 }}><IconArrow size={14} color={lc} /></div>
+                      <span style={{ fontSize:13, lineHeight:1.5 }}>{tip}</span>
                     </div>
-                    <div style={{
-                      position:"absolute", bottom:0, left:0, right:0, top:0,
-                      background:"linear-gradient(180deg, transparent 0%, rgba(250,250,247,0.9) 70%)",
-                      display:"flex", alignItems:"flex-end", justifyContent:"center", paddingBottom:8,
-                    }}>
-                      <button
-                        onClick={() => { const el = document.getElementById("guide-section"); if(el) el.scrollIntoView({ behavior:"smooth" }); }}
-                        style={{
-                          fontSize:11, fontWeight:600, color:P.accent,
-                          background:P.accentLight, padding:"6px 16px", borderRadius:20,
-                          display:"inline-flex", alignItems:"center", gap:5,
-                          border:`1.5px solid ${P.accent}33`, cursor:"pointer",
-                          transition:"all 0.2s",
-                        }}
-                        onMouseEnter={e => { e.target.style.background = P.accent; e.target.style.color = "#fff"; }}
-                        onMouseLeave={e => { e.target.style.background = P.accentLight; e.target.style.color = P.accent; }}
-                      >
-                        <IconLock size={12} color="currentColor" />
-                        Más acciones en la guía →
-                      </button>
-                    </div>
-                  </div>
+                  ))}
+
                 </div>
               </Card>
             );
           })}
+          {/* Single CTA after full analysis */}
+          <div style={{ textAlign:"center", marginTop:8 }}>
+            <button
+              onClick={() => { const el = document.getElementById("guide-section"); if(el) el.scrollIntoView({ behavior:"smooth" }); }}
+              style={{
+                fontSize:14, fontWeight:700, color:"#fff",
+                background:`linear-gradient(135deg,${P.accent},${P.accentDark})`,
+                padding:"14px 32px", borderRadius:12,
+                border:"none", cursor:"pointer",
+                boxShadow:`0 4px 14px rgba(26,107,75,0.25)`,
+                fontFamily:"'Outfit', system-ui, sans-serif",
+              }}
+            >
+              Ver el plan completo de 21 días →
+            </button>
+          </div>
         </Section>
+
         <Divider />
+
+        {/* Summary */}
         <Section>
           <Card style={{ background:P.warm, border:"none" }}>
             <div style={{ display:"flex", gap:10, alignItems:"flex-start", marginBottom:10 }}>
               <div style={{ flexShrink:0, marginTop:2 }}><IconPin size={22} color={P.accent} /></div>
-              <h3 style={{ fontFamily:serif, fontSize:18, fontWeight:600, margin:0 }}>Resumen para {name}</h3>
+              <h3 style={{ fontFamily:serif, fontSize:18, fontWeight:600, margin:0 }}>Tu resumen</h3>
             </div>
             {weakCats.length > 0 && <p style={{ fontSize:14, lineHeight:1.55, marginBottom:8 }}><strong>Mayor exposición:</strong> {weakCats.map(c=>CATEGORIES[c].label).join(", ")}. La guía incluye acciones específicas para estas áreas.</p>}
             {midCats.length > 0 && <p style={{ fontSize:14, lineHeight:1.55, marginBottom:8 }}><strong>Margen de mejora:</strong> {midCats.map(c=>CATEGORIES[c].label).join(", ")}.</p>}
             {strongCats.length > 0 && <p style={{ fontSize:14, lineHeight:1.55, marginBottom:0 }}><strong>Mejor protegidas:</strong> {strongCats.map(c=>CATEGORIES[c].label).join(", ")}.</p>}
           </Card>
         </Section>
+
         <Divider />
 
-        {/* GUIDE SECTION — detailed, connected to results */}
+        {/* Guide offer — connected naturally to results */}
         <Section id="guide-section">
           <Badge style={{ marginBottom:14 }}>Tu siguiente paso</Badge>
           <h2 style={{ fontFamily:serif, fontSize:24, fontWeight:600, marginBottom:10 }}>Guía Práctica: Reduce Tu Exposición en 21 Días</h2>
@@ -1301,7 +1287,6 @@ export default function Funnel() {
             El test te ha dado el diagnóstico. La guía te da el plan completo: todas las acciones, los productos concretos y un calendario de 21 días para ponerlo en práctica.
           </p>
 
-          {/* Profile connection — grade based */}
           <Card style={{ background:P.warm, border:"none", marginBottom:16 }}>
             <div style={{ display:"flex", gap:12, alignItems:"center", marginBottom:10 }}>
               <div style={{ width:42, height:42, borderRadius:10, background:GRADES[pctToGrade(scores.overall.pct)].bg, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
@@ -1310,12 +1295,7 @@ export default function Funnel() {
               <div>
                 <div style={{ fontWeight:700, fontSize:14, color:P.text }}>Tu nivel actual: {GRADES[pctToGrade(scores.overall.pct)].label}</div>
                 <div style={{ fontSize:13, color:P.muted }}>
-                  {weakCats.length > 0
-                    ? `Exposición alta en ${weakCats.length} de 5 categorías`
-                    : midCats.length > 0
-                    ? `Margen de mejora en ${midCats.length} de 5 categorías`
-                    : `Buen nivel general — la guía te ayuda a mantenerlo`
-                  }
+                  {weakCats.length > 0 ? `Exposición alta en ${weakCats.length} de 5 categorías` : midCats.length > 0 ? `Margen de mejora en ${midCats.length} de 5 categorías` : `Buen nivel general — la guía te ayuda a mantenerlo`}
                 </div>
               </div>
             </div>
@@ -1324,10 +1304,8 @@ export default function Funnel() {
             </p>
           </Card>
 
-          {/* Chapter details — expanded */}
           <Card style={{ marginBottom:16 }}>
             <h3 style={{ fontSize:15, fontWeight:700, marginBottom:16, marginTop:0 }}>Qué incluye cada capítulo:</h3>
-
             {[
               { icon: <IconFood size={22} color={CATEGORIES.food.color} />, title: "Alimentación", items: ["Qué plásticos son peores al calentar (y cuáles son aceptables)", "Tabla de sustitución: producto habitual → alternativa → dónde comprarlo", "La verdad sobre las bolsitas de té, el film y el porexpán"] },
               { icon: <IconWater size={22} color={CATEGORIES.water.color} />, title: "Agua", items: ["Comparativa de filtros: jarra vs grifo vs ósmosis (precio, eficacia, mantenimiento)", "Marcas de filtro disponibles en España con precios reales", "Errores comunes con las botellas reutilizables"] },
@@ -1351,7 +1329,6 @@ export default function Funnel() {
             ))}
           </Card>
 
-          {/* Plan 21 días + Bonus */}
           <Card style={{ marginBottom:16, border:`1.5px solid ${P.accent}22` }}>
             <div style={{ display:"flex", gap:10, alignItems:"center", marginBottom:10 }}>
               <IconCalendar size={22} color={P.accent} />
@@ -1377,7 +1354,6 @@ export default function Funnel() {
             </p>
           </Card>
 
-          {/* Extras */}
           <div style={{ display:"flex", gap:10, marginBottom:20, flexWrap:"wrap" }}>
             {["Checklists imprimibles por habitación","Glosario de ingredientes INCI","Formato PDF descargable","Actualizaciones gratuitas"].map((e,i) => (
               <div key={i} style={{ display:"flex", gap:6, alignItems:"center" }}>
@@ -1387,21 +1363,22 @@ export default function Funnel() {
             ))}
           </div>
 
-          {/* Price + CTA */}
-          <Card style={{ background:P.warm, border:"none", textAlign:"center", marginBottom:20 }}>
-            <div style={{ display:"inline-flex", alignItems:"center", gap:8, background:"#D92B2B", color:"#fff", fontSize:11, fontWeight:700, padding:"4px 12px", borderRadius:20, marginBottom:10, letterSpacing:0.3 }}>
-              OFERTA DE PASCUA −73%
+          <Card style={{ background:P.warm, border:`2px solid ${P.accent}33`, textAlign:"center", marginBottom:20, position:"relative", overflow:"hidden" }}>
+            <div style={{ position:"absolute", top:0, left:0, right:0, background:P.accent, padding:"6px 0" }}>
+              <span style={{ fontSize:12, fontWeight:700, color:"#fff", letterSpacing:"0.08em", textTransform:"uppercase" }}>Oferta de Pascua — Precio especial</span>
             </div>
-            <div style={{ display:"flex", alignItems:"baseline", justifyContent:"center", gap:12 }}>
-              <span style={{ fontFamily:serif, fontSize:20, fontWeight:500, color:P.muted, textDecoration:"line-through", textDecorationColor:"#D92B2B", textDecorationThickness:2 }}>37 €</span>
-              <span style={{ fontFamily:serif, fontSize:36, fontWeight:700, color:P.accent }}>9,90 €</span>
+            <div style={{ paddingTop:36 }}>
+              <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:12, marginBottom:4 }}>
+                <span style={{ fontSize:20, color:P.muted, textDecoration:"line-through", fontFamily:serif, opacity:0.6 }}>37,00 €</span>
+                <span style={{ fontSize:12, fontWeight:700, color:"#fff", background:"#C0392B", padding:"3px 10px", borderRadius:20 }}>-73%</span>
+              </div>
+              <div style={{ fontFamily:serif, fontSize:38, fontWeight:700, color:P.accent, lineHeight:1 }}>9,90 €</div>
+              <p style={{ fontSize:12, color:P.muted, margin:"8px 0 4px" }}>IVA incluido · Oferta válida por tiempo limitado</p>
             </div>
-            <p style={{ fontSize:13, color:P.muted, margin:"8px 0 0", lineHeight:1.5 }}>Menos que una jarra filtrante. Menos que dos cafés con tostada.</p>
           </Card>
-          <Btn onClick={() => window.location.href = "https://buy.stripe.com/dRm6oH8syeNJ0y1aWK8ww00"}>Quiero mi guía por 9,90 €</Btn>
+          <Btn onClick={() => window.location.href = "https://buy.stripe.com/dRm6oH8syeNJ0y1aWK8ww00"}>Quiero mi guía por 9,90 € →</Btn>
           <p style={{ fontSize:12, color:P.muted, textAlign:"center", marginTop:12 }}>Pago seguro · Acceso inmediato · Garantía 30 días</p>
-          <p style={{ fontSize:12, color:P.muted, textAlign:"center", marginTop:8, display:"flex", alignItems:"center", justifyContent:"center", gap:5 }}>🌱 El 1% de cada compra se destina a protección medioambiental</p>
-          {/* Payment methods */}
+          <p style={{ fontSize:12, color:P.muted, textAlign:"center", marginTop:8, display:"flex", alignItems:"center", justifyContent:"center", gap:5 }}><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 22C12 22 6 15 6 10a6 6 0 0112 0c0 5-6 12-6 12z" stroke="#1A6B4B" strokeWidth="1.8" fill="#1A6B4B" fillOpacity="0.12"/><path d="M12 10v12" stroke="#1A6B4B" strokeWidth="1.5" strokeLinecap="round" opacity="0.4"/></svg>El 1% de cada compra se destina a protección medioambiental</p>
           <div style={{ display:"flex", justifyContent:"center", gap:8, marginTop:10, alignItems:"center", flexWrap:"wrap" }}>
             <span style={{ fontSize:11, color:P.muted }}>Métodos de pago:</span>
             <span style={{ fontSize:11, fontWeight:700, color:"#635BFF", background:"#635BFF14", padding:"3px 10px", borderRadius:6 }}>Tarjeta</span>
@@ -1412,32 +1389,54 @@ export default function Funnel() {
 
         <Divider />
 
-        {/* Objection handling — moved here from deleted sales page */}
         <Section>
           <h2 style={{ fontFamily:serif, fontSize:22, fontWeight:600, marginBottom:20 }}>Puede que te preguntes...</h2>
-          {[
-            ["¿No puedo buscar esta información yo?","Claro. Pero recopilarla, verificar fuentes, adaptarla al mercado español y organizarla en un plan de 21 días lleva tiempo. La guía te ahorra esas horas."],
-            ["¿9,90 € merece la pena por un PDF?","Piensa en lo que gastas cada semana en botellas de plástico que podrías evitar. La guía se paga sola con el primer cambio de hábito."],
-            ["¿Y si no es lo que esperaba?","Tienes 30 días para decidir. Si no te resulta útil, escribes a hola@puraclaridad.com y te devolvemos el importe completo. Sin preguntas, sin formularios."],
-          ].map(([q,a],i) => (
-            <Card key={i} style={{ marginBottom:10 }}><div style={{ fontWeight:600, fontSize:14, marginBottom:6, fontStyle:"italic", color:P.text }}>«{q}»</div><div style={{ fontSize:13, color:P.muted, lineHeight:1.55 }}>{a}</div></Card>
-          ))}
+
+          {/* Q1 — dynamic: references their actual weak category */}
+          <Card style={{ marginBottom:10 }}>
+            <div style={{ fontWeight:600, fontSize:14, marginBottom:6, fontStyle:"italic", color:P.text }}>
+              «{weakCats.length > 0
+                ? `Acabo de ver que tengo exposición alta en ${CATEGORIES[weakCats[0]].label.toLowerCase()}. ¿La guía cubre eso en detalle?`
+                : midCats.length > 0
+                ? `Tengo margen de mejora en ${CATEGORIES[midCats[0]].label.toLowerCase()}. ¿La guía me dice exactamente qué hacer?`
+                : `Mi nivel general es bueno. ¿Merece la pena la guía de todas formas?`
+              }»
+            </div>
+            <div style={{ fontSize:13, color:P.muted, lineHeight:1.55 }}>
+              {weakCats.length > 0
+                ? `Sí. La guía dedica un capítulo entero a ${CATEGORIES[weakCats[0]].label.toLowerCase()} con acciones ordenadas por impacto, productos concretos disponibles en España y una tabla de sustitución directa. Empieza por ahí y notarás la diferencia en menos de una semana.`
+                : midCats.length > 0
+                ? `Exactamente para eso está diseñada. Cada capítulo va al grano: qué cambiar, por qué, y con qué producto específico en España. Sin teoría innecesaria.`
+                : `Mantener un nivel A requiere saber qué revisar cuando cambian los productos que usas. La guía te da ese criterio para que no tengas que investigar cada vez.`
+              }
+            </div>
+          </Card>
+
+          {/* Q2 — reframed around the result, not the price */}
+          <Card style={{ marginBottom:10 }}>
+            <div style={{ fontWeight:600, fontSize:14, marginBottom:6, fontStyle:"italic", color:P.text }}>«¿9,90 € merece la pena por un PDF?»</div>
+            <div style={{ fontSize:13, color:P.muted, lineHeight:1.55 }}>
+              Acabas de ver tu resultado. La guía es el plan para mejorarlo: acciones concretas por cada área, productos reales en supermercados españoles y un calendario de 21 días. Investigarlo tú mismo llevaría horas — y probablemente encontrarías información genérica que no aplica a España. 9,90 € por tenerlo todo resuelto.
+            </div>
+          </Card>
+
+          {/* Q3 — guarantee, unchanged */}
+          <Card style={{ marginBottom:10 }}>
+            <div style={{ fontWeight:600, fontSize:14, marginBottom:6, fontStyle:"italic", color:P.text }}>«¿Y si no es lo que esperaba?»</div>
+            <div style={{ fontSize:13, color:P.muted, lineHeight:1.55 }}>Tienes 30 días para decidir. Si no te resulta útil, escribes a hola@puraclaridad.com y te devolvemos el importe completo. Sin preguntas, sin formularios.</div>
+          </Card>
         </Section>
 
-        {/* Final CTA */}
         <Section style={{ textAlign:"center", paddingTop:0, paddingBottom:20 }}>
           <h2 style={{ fontFamily:serif, fontSize:24, fontWeight:600, marginBottom:16, lineHeight:1.3 }}>Saber es el primer paso. Tener un plan es el segundo.</h2>
           <Btn onClick={() => window.location.href = "https://buy.stripe.com/dRm6oH8syeNJ0y1aWK8ww00"}>Acceder a la guía — 9,90 €</Btn>
         </Section>
 
-        {/* Sticky bottom bar */}
         <StickyBuyBar />
-
         <Footer onLegalClick={openLegal} />
       </div>
     );
   }
 
-  // ═══ LOADING (removed — no longer needed since results show immediately) ═══
   return null;
 }
